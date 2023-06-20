@@ -3,6 +3,7 @@
 
 .vs/
 
-config.py
-configlvl.py
 .env
+data
+
+music_generations

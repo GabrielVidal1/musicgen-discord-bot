@@ -54,17 +54,20 @@ class Apis(commands.Cog):
                 await inter.edit_original_response(content=None, embed=embed)
                 os.remove("image.png")
         except Exception as e:
-            await inter.edit_original_response(content=f"An error occurred while generating the image. {e}")
+            embed = disnake.Embed(title=f"Error", color=disnake.Color.red())
+            embed.add_field(name="Error", value=f"An error occurred while generating the image.\n{str(e)}")
+            await inter.edit_original_response(embed=embed)
 
     @commands.slash_command(name="musicgen", description="Generate a music")
     async def generate_musicgen(
         inter: disnake.ApplicationCommandInteraction,
         prompt: str = commands.Param(description="The prompt to generate the music from"),
-        duration: int = commands.Param(description="The duration of the music to generate", default=8),
+        duration: int = commands.Param(description="The duration of the music to generate", default=8, choices=[4, 8, 10, 12, 14, 16, 18, 20]),
     ):
         
         try:
             await inter.response.defer()
+
             ETA = int(time.time() + 15 * duration)
             embed = disnake.Embed(title=f"Loading...! Generating music... ETA: <t:{ETA}:R>", color=disnake.Color.random())
             embed.set_image(file=disnake.File("assets/loading/loading_music.gif"))
@@ -77,7 +80,9 @@ class Apis(commands.Cog):
             await inter.edit_original_response(file=file, content=content, embed=None)
 
         except Exception as e:
-            await inter.edit_original_response(content=f"An error occurred while generating the music. {e}")
+            embed = disnake.Embed(title=f"Error", color=disnake.Color.red())
+            embed.add_field(name="Error", value=f"An error occurred while generating the music.\n{str(e)}")
+            await inter.edit_original_response(embed=embed, file=None, content=None)
 
 
 

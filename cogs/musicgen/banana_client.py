@@ -35,21 +35,23 @@ def generate_musicgen(prompt: str, duration = 8 ):
   audio = decode_audio(outputs[0].get('audio'))
 
   # Create folder of date if not exists YYYY-MM-DD
-  date = datetime.now().strftime("%Y-%m-%d")
+  date = datetime.datetime.now().strftime("%Y-%m-%d")
   folder = f"music_generations/{date}"
   if not os.path.exists(folder):
     os.makedirs(folder)
 
   fileNB = len(os.listdir(folder))
-  filename = uuid + '-'+ slugify(prompt).replace('_', '-') + f"-{fileNB}.mp3"
-  filename = filename[:200]
+
+  slugfilename = slugify(prompt).replace('_', '-')[:200]
+
+  filename = f"{uuid}-{slugfilename}-{fileNB}.mp3"[:200]
   
   path = os.path.join(folder, filename)
 
   with open(path, "wb") as f:
     f.write(audio)
 
-  return path, filename
+  return path, slugfilename + '.mp3'
 
 if __name__ == "__main__":
   # prompt = "drum and bass beat with intense percussions"
